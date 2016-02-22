@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database xmlns="http://www.example.org/xml-db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PIS_Projekti" xsi:schemaLocation="http://www.example.org/xml-db xml-db.xsd">
+<connection address="78.28.157.8" database="PIS2015" database_type="MsSQL" password="EtfPIS2015G16728" port="default" schema="pisg1" username="EtfPIS2015G1"/>
+<package name="ZajednickiDio">
+<package name="Teritorijalna Organizacija">
+<table code="DRZAVA" name="Drzava">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="DR_OZNAKA" group="0" name="Oznaka" nullable="false" primary="true" size="3" type="char(3)">
+</column>
+<column code="DR_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<column code="NM_IDENTIFIKATOR" group="0" name="Glavni grad" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<column code="DRZ_DR_OZNAKA" group="0" name="Pravni naslednik" nullable="true" primary="false" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<crud>
+<create>sp_insert_DRZAVA</create>
+<retrieve>getDrzava</retrieve>
+<update>sp_update_DRZAVA</update>
+<delete>sp_delete_DRZAVA</delete>
+</crud>
+</table>
+<table code="REGION" name="Region">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TR_OZNAKA_TIPA" group="0" name="Tip regiona" nullable="false" primary="true" size="1" type="char(1)">
+<references refColumn="TR_OZNAKA_TIPA" refTable="TIP"/>
+</column>
+<column code="REG_OZNAKA" group="0" name="Oznaka regiona" nullable="false" primary="true" size="3" type="char(3)"/>
+<column code="REG_NAZIV" group="0" name="Naziv trgiona" nullable="false" primary="false" size="60" type="varchar(60)"/>
+<column code="DR_OZNAKA" group="0" name="Drzava regiona" nullable="true" primary="false" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="NM_IDENTIFIKATOR" group="0" name="Sediste regiona" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<crud>
+<create>sp_insert_REGION</create>
+<retrieve>getRegion</retrieve>
+<update>sp_update_REGION</update>
+<delete>sp_delete_REGION</delete>
+</crud>
+</table>
+<table code="TIP" name="Tip">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TR_OZNAKA_TIPA" group="0" name="Oznaka tipa" nullable="false" primary="true" size="1" type="char(1)"/>
+<column code="TR_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<crud>
+<create>sp_insert_TIP</create>
+<retrieve>getTip</retrieve>
+<update>sp_update_TIP</update>
+<delete>sp_delete_TIP</delete>
+</crud>
+</table>
+<table code="REGIONALNA_DRZAVA" name="Regionalna drzava">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="IDENTIFIKATOR_REG_DRZAVE" group="0" name="Identifikator reg drzave" nullable="false" primary="true" size="" type="int"/>
+<column code="DR_OZNAKA" group="0" name="Drzava" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="TR_OZNAKA_TIPA" group="0" name="Tip regiona" nullable="false" primary="true" size="1" type="char(1)">
+<references refColumn="TR_OZNAKA_TIPA" refTable="REGION"/>
+</column>
+<column code="REG_OZNAKA" group="0" name="Oznaka regiona" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="REG_OZNAKA" refTable="REGION"/>
+</column>
+<column code="DRR_OD" group="0" name="Od" nullable="false" primary="false" size="" type="date"/>
+<column code="DRR_DO" group="0" name="do" nullable="true" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_REGIONALNA_DRZAVA</create>
+<retrieve>getRegionalnaDrzava</retrieve>
+<update>sp_update_REGIONALNA_DRZAVA</update>
+<delete>sp_delete_REGIONALNA_DRZAVA</delete>
+</crud>
+</table>
+<table code="SLOZENA_DRZAVA" name="Slozena drzava">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="SD_REDNI_BROJ" group="0" name="Redni broj" nullable="false" primary="true" size="2" type="numeric(2)"/>
+<column code="DR_OZNAKA" group="0" name="Oznaka slozene" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="DRZ_DR_OZNAKA" group="0" name="Drzava clanica" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="SD_OD" group="0" name="Datum od kada" nullable="true" primary="false" size="" type="date"/>
+<column code="SD_DO_KADA" group="0" name="Do kada" nullable="true" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_SLOZENA_DRZAVA</create>
+<retrieve>getSlozenaDrzava</retrieve>
+<update>sp_update_SLOZENA_DRZAVA</update>
+<delete>sp_delete_SLOZENA_DRZAVA</delete>
+</crud>
+</table>
+<table code="OPSTINE" name="Opstine">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="OP_OZNAKA" group="0" name="Opstina" nullable="false" primary="true" size="3" type="numeric(3)"/>
+<column code="DR_OZNAKA" group="0" name="Drzava" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="OP_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="60" type="varchar(60)"/>
+<column code="NM_IDENTIFIKATOR" group="0" name="Sediste opstine" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<crud>
+<create>sp_insert_OPSTINE</create>
+<retrieve>getOpstine</retrieve>
+<update>sp_update_OPSTINE</update>
+<delete>sp_delete_OPSTINE</delete>
+</crud>
+</table>
+<table code="NASELJENO_MJESTO" name="Naseljeno mjesto">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="NM_IDENTIFIKATOR" group="0" name="Identifikator" nullable="false" primary="true" size="" type="int"/>
+<column code="NM_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="NM_PTT_OZNAKA" group="0" name="PTT oznaka" nullable="false" primary="false" size="20" type="varchar(20)"/>
+<crud>
+<create>sp_insert_NASELJENO_MJESTO</create>
+<retrieve>getNaseljenoMjesto</retrieve>
+<update>sp_update_NASELJENO_MJESTO</update>
+<delete>sp_delete_NASELJENO_MJESTO</delete>
+</crud>
+</table>
+<table code="MJESTA_U_DRZAVI" name="Mjesta u drzavi">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="NMD_IDENTIFIKATOR_MESTA_U_DRZ" group="0" name="Identifikator mesta u drz" nullable="false" primary="true" size="" type="int"/>
+<column code="DR_OZNAKA" group="0" name="Drzava" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<column code="NM_IDENTIFIKATOR" group="0" name="Naseljeno mesto" nullable="false" primary="true" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<column code="NMD_OD" group="0" name="od" nullable="false" primary="false" size="" type="date"/>
+<column code="NMD_DO" group="0" name="do" nullable="true" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_MJESTA_U_DRZAVI</create>
+<retrieve>getMjestaUDrzavi</retrieve>
+<update>sp_update_MJESTA_U_DRZAVI</update>
+<delete>sp_delete_MJESTA_U_DRZAVI</delete>
+</crud>
+</table>
+<table code="STRUKTURA_REGIONA" name="Struktura regiona">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TR_OZNAKA_TIPA" group="0" name="Tip slozenog regiona" nullable="false" primary="true" size="1" type="char(1)">
+<references refColumn="TR_OZNAKA_TIPA" refTable="REGION"/>
+</column>
+<column code="REG_OZNAKA" group="0" name="Oznaka slozenog regiona" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="REG_OZNAKA" refTable="REGION"/>
+</column>
+<column code="REG_TR_OZNAKA_TIPA" group="0" name="Tip regiona u sastavu" nullable="false" primary="true" size="1" type="char(1)">
+<references refColumn="TR_OZNAKA_TIPA" refTable="REGION"/>
+</column>
+<column code="REG_REG_OZNAKA" group="0" name="Oznaka regiona u sastavu" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="REG_OZNAKA" refTable="REGION"/>
+</column>
+<crud>
+<create>sp_insert_STRUKTURA_REGIONA</create>
+<retrieve>getStrukturaRegiona</retrieve>
+<update>sp_update_STRUKTURA_REGIONA</update>
+<delete>sp_delete_STRUKTURA_REGIONA</delete>
+</crud>
+</table>
+<table code="STRUKTURA_NASELJA" name="Struktura naselja">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="NM_IDENTIFIKATOR" group="0" name="Naseljeno mesto" nullable="false" primary="true" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="OPSTINE"/>
+</column>
+<column code="OP_OZNAKA" group="0" name="Opstina" nullable="false" primary="true" size="3" type="numeric(3)">
+<references refColumn="OP_OZNAKA" refTable="OPSTINE"/>
+</column>
+<crud>
+<create>sp_insert_STRUKTURA_NASELJA</create>
+<retrieve>getStrukturaNaselja</retrieve>
+<update>sp_update_STRUKTURA_NASELJA</update>
+<delete>sp_delete_STRUKTURA_NASELJA</delete>
+</crud>
+</table>
+</package>
+<package name="Unutrasnja organizacija">
+<table code="PRAVNO_LICE" name="Pravno lice">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<column code="IPL_MATICNI_BROV" group="0" name="Maticni broj" nullable="true" primary="false" size="13" type="varchar(13)"/>
+<column code="IPLPIB" group="0" name="PIB" nullable="true" primary="false" size="13" type="varchar(13)"/>
+<column code="NM_IDENTIFIKATOR" group="0" name="Sjediste pravnog lica" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<column code="PRA_IPL_IDENT" group="0" name="Pravni naslednik" nullable="true" primary="false" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<crud>
+<create>sp_insert_PRAVNO_LICE</create>
+<retrieve>getPravnoLice</retrieve>
+<update>sp_update_PRAVNO_LICE</update>
+<delete>sp_delete_PRAVNO_LICE</delete>
+</crud>
+</table>
+<table code="REGISTAR_DJELATNOSTI" name="Registar Djelatnosti">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="RD_IDENTIFIKATOR" group="0" name="Identifikator" nullable="false" primary="true" size="2" type="char(2)"/>
+<column code="RD_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="60" type="varchar(60)"/>
+<column code="RD_SLUZBENAOZNAKA" group="0" name="Sluzbena oznaka" nullable="true" primary="false" size="30" type="varchar(30)"/>
+<column code="DR_OZNAKA" group="0" name="Oznaka" nullable="true" primary="false" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="DRZAVA"/>
+</column>
+<crud>
+<create>sp_insert_REGISTAR_DJELATNOSTI</create>
+<retrieve>getRegistarDjelatnosti</retrieve>
+<update>sp_update_REGISTAR_DJELATNOSTI</update>
+<delete>sp_delete_REGISTAR_DJELATNOSTI</delete>
+</crud>
+</table>
+<table code="ORGANIZACIONA_JEDINICA" name="Organizaciona jedinica">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="OJ_IDENTIFIKACIJA" group="0" name="Oznaka organizacione jedinice" nullable="false" primary="true" size="4" type="numeric(4)"/>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizaciona jedinica pravnog lica" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="OJ_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="60" type="varchar(60)"/>
+<column code="OJ_PRAVNOLICE" group="0" name="Pravno lice" nullable="false" primary="false" size="" type="bit"/>
+<column code="NM_IDENTIFIKATOR" group="0" name="Sjediste organizacione jedinice" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<crud>
+<create>sp_insert_ORGANIZACIONA_JEDINICA</create>
+<retrieve>getOrganizacionaJedinica</retrieve>
+<update>sp_update_ORGANIZACIONA_JEDINICA</update>
+<delete>sp_delete_ORGANIZACIONA_JEDINICA</delete>
+</crud>
+</table>
+<table code="AKT_O_ORGANIZACIJI" name="Akt o organizaciji">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="AO_BROJ_AKTA" group="0" name="Broj akta" nullable="false" primary="true" size="4" type="numeric(4)"/>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="ORGANIZACIONA_JEDINICA"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizaciona jedinica pravnog lica" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="ORGANIZACIONA_JEDINICA"/>
+</column>
+<column code="OJ_IDENTIFIKACIJA" group="0" name="Oznaka organizacione jedinice" nullable="false" primary="true" size="4" type="numeric(4)">
+<references refColumn="OJ_IDENTIFIKACIJA" refTable="ORGANIZACIONA_JEDINICA"/>
+</column>
+<column code="AO_DATDON" group="0" name="Datum donosenja" nullable="false" primary="false" size="" type="date"/>
+<column code="AO_VAZI_DO" group="0" name="Vazi do" nullable="true" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_AKT_O_ORGANIZACIJI</create>
+<retrieve>getAktOOrganizacijiData</retrieve>
+<update>sp_update_AKT_O_ORGANIZACIJI</update>
+<delete>sp_delete_AKT_O_ORGANIZACIJI</delete>
+</crud>
+</table>
+<table code="REGISTAR_ZAPOSLENIH" name="Registar zaposlenih">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="RZ_IDENTIFIKATOR" group="0" name="Identifikator" nullable="false" primary="true" size="" type="int"/>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="RZ_IME" group="0" name="Ime" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="RZ_PREZIME" group="0" name="Prezime" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="RZ_IME_JEDNOG_RODITELJA" group="0" name="Ime jednog roditelja" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="RZ_POL" group="0" name="Pol" nullable="false" primary="false" size="1" type="char(1)"/>
+<column code="RZ_DATUM_RODJENJA" group="0" name="Datum rodjenja" nullable="false" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_REGISTAR_ZAPOSLENIH</create>
+<retrieve>getRegistarZaposlenih</retrieve>
+<update>sp_update_REGISTAR_ZAPOSLENIH</update>
+<delete>sp_delete_REGISTAR_ZAPOSLENIH</delete>
+</crud>
+</table>
+<table code="SISTEMATIZACIJA_RADNIH_MJESTA" name="Sistematizacija radnih mjesta">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="SRM_IDENTIFIKATOR" group="0" name="Identifikator" nullable="false" primary="true" size="" type="int"/>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="SRM_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="30" type="varchar(30)"/>
+<crud>
+<create>sp_insert_SISTEMATIZACIJA_RADNIH_MJESTA</create>
+<retrieve>getSistematizacijaRadnihMjesta</retrieve>
+<update>sp_update_SISTEMATIZACIJA_RADNIH_MJESTA</update>
+<delete>sp_delete_SISTEMATIZACIJA_RADNIH_MJESTA</delete>
+</crud>
+</table>
+<table code="RASPORED_RADNIH_MJESTA" name="Raspored radnih mjesta">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="RRM_REDNI_BROJ_RASPOREDA" group="0" name="Redni broj rasporeda" nullable="false" primary="true" size="2" type="numeric(2)"/>
+<column code="SIS_DR_OZNAKA" group="0" name="Sis_Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="REGISTAR_ZAPOSLENIH"/>
+<references refColumn="DR_OZNAKA" refTable="SISTEMATIZACIJA_RADNIH_MJESTA"/>
+</column>
+<column code="SIS_IPL_IDENT" group="0" name="Sis_Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="REGISTAR_ZAPOSLENIH"/>
+<references refColumn="IPL_IDENT" refTable="SISTEMATIZACIJA_RADNIH_MJESTA"/>
+</column>
+<column code="SRM_IDENTIFIKATOR" group="0" name="Identifikator sistematizacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="SRM_IDENTIFIKATOR" refTable="SISTEMATIZACIJA_RADNIH_MJESTA"/>
+</column>
+<column code="RZ_IDENTIFIKATOR" group="0" name="Identifikator zaposlenog" nullable="false" primary="true" size="" type="int">
+<references refColumn="RZ_IDENTIFIKATOR" refTable="REGISTAR_ZAPOSLENIH"/>
+</column>
+<column code="RRM_DATUM_OD" group="0" name="Datum od" nullable="false" primary="false" size="" type="date"/>
+<column code="RRM_DATUM_DO" group="0" name="Datum do" nullable="true" primary="false" size="" type="date"/>
+<crud>
+<create>sp_insert_RASPORED_RADNIH_MJESTA</create>
+<retrieve>getRasporedRadnihMjesta</retrieve>
+<update>sp_update_RASPORED_RADNIH_MJESTA</update>
+<delete>sp_delete_RASPORED_RADNIH_MJESTA</delete>
+</crud>
+</table>
+<table code="DJELATNOST" name="Djelatnost">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="RD_IDENTIFIKATOR" group="0" name="Identifikator" nullable="false" primary="true" size="2" type="char(2)">
+<references refColumn="RD_IDENTIFIKATOR" refTable="REGISTAR_DJELATNOSTI"/>
+</column>
+<crud>
+<create>sp_insert_DJELATNOST</create>
+<retrieve>getDjelatnost</retrieve>
+<update>sp_update_DJELATNOST</update>
+<delete>sp_delete_DJELATNOST</delete>
+</crud>
+</table>
+<table code="ORGANIZACIJA" name="Organizacija">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="AKT_DR_OZNAKA" group="0" name="Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="ORGANIZACIONA_JEDINICA"/>
+<references refColumn="DR_OZNAKA" refTable="AKT_O_ORGANIZACIJI"/>
+</column>
+<column code="AKT_IPL_IDENT" group="0" name="Organizaciona jedinica pravnog lica" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="ORGANIZACIONA_JEDINICA"/>
+<references refColumn="IPL_IDENT" refTable="AKT_O_ORGANIZACIJI"/>
+</column>
+<column code="AKT_OJ_IDENTIFIKACIJA" group="0" name="Oznaka organizacione jedinice" nullable="false" primary="true" size="4" type="numeric(4)">
+<references refColumn="OJ_IDENTIFIKACIJA" refTable="AKT_O_ORGANIZACIJI"/>
+</column>
+<column code="AO_BROJ_AKTA" group="0" name="Broj akta" nullable="false" primary="true" size="4" type="numeric(4)">
+<references refColumn="AO_BROJ_AKTA" refTable="AKT_O_ORGANIZACIJI"/>
+</column>
+<column code="OJ_IDENT_JED_ORG_JED" group="0" name="Oznaka org jedinice u slozenoj org" nullable="false" primary="true" size="4" type="numeric(4)">
+<references refColumn="OJ_IDENTIFIKACIJA" refTable="ORGANIZACIONA_JEDINICA"/>
+</column>
+<crud>
+<create>sp_insert_ORGANIZACIJA</create>
+<retrieve>getOrganizacija</retrieve>
+<update>sp_update_ORGANIZACIJA</update>
+<delete>sp_delete_ORGANIZACIJA</delete>
+</crud>
+</table>
+<table code="ORGANIZACIJA_PL" name="Organizacija PL">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="PRA_DR_OZNAKA" group="0" name="Pra_Drzava u kojoj je reg" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="PRA_IPL_IDENT" group="0" name="Pra_Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<crud>
+<create>sp_insert_ORGANIZACIJA_PL</create>
+<retrieve>getOrganizacijaPL</retrieve>
+<update>sp_update_ORGANIZACIJA_PL</update>
+<delete>sp_delete_ORGANIZACIJA_PL</delete>
+</crud>
+</table>
+</package>
+</package>
+<package name="Tim1">
+<table code="BENEFICIJA" name="Beneficija">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="BEN_OZNAKA_BENEFICIJE" group="0" name="Oznaka beneficije" nullable="false" primary="true" size="" type="int"/>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava pravnog lica" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="BEN_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<column code="BEN_NAPOMENA" group="0" name="Napomena" nullable="true" primary="false" size="150" type="varchar(150)"/>
+<crud>
+<create>sp_insert_BENEFICIJA</create>
+<retrieve>getBeneficija</retrieve>
+<update>sp_update_BENEFICIJA</update>
+<delete>sp_delete_BENEFICIJA</delete>
+</crud>
+</table>
+<table code="BENEFICIJE_CLANOVA" name="Beneficije clanova">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="BEN_OZNAKA_BENEFICIJE" group="0" name="Oznaka beneficije" nullable="false" primary="true" size="" type="int">
+<references refColumn="BEN_OZNAKA_BENEFICIJE" refTable="BENEFICIJA"/>
+</column>
+<column code="BEN_IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="BENEFICIJA"/>
+<references refColumn="IPL_IDENT" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<column code="BEN_DR_OZNAKA" group="0" name="Drzava pravnog lica" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="BENEFICIJA"/>
+<references refColumn="DR_OZNAKA" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<column code="CKU_CLANSKI_BROJ" group="0" name="Clanski broj" nullable="false" primary="true" size="" type="int">
+<references refColumn="CKU_CLANSKI_BROJ" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<crud>
+<create>sp_insert_BENEFICIJE_CLANOVA</create>
+<retrieve>getBeneficijeClanova</retrieve>
+<update>sp_update_BENEFICIJE_CLANOVA</update>
+<delete>sp_delete_BENEFICIJE_CLANOVA</delete>
+</crud>
+</table>
+<table code="CLAN_KULTURNE_USTANOVE" name="Clan kulturne ustanove">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="CKU_CLANSKI_BROJ" group="0" name="Clanski broj" nullable="false" primary="true" size="" type="int"/>
+<column code="IPL_IDENT" group="0" name="Pravno lice" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava pravnog lica" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="CKU_IME" group="0" name="Ime" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="CKU_PREZIME" group="0" name="Prezime" nullable="false" primary="false" size="40" type="varchar(40)"/>
+<column code="CKU_POL" group="0" name="Pol" nullable="true" primary="false" size="1" type="char(1)"/>
+<column code="CKU_DATUM_RODJENJA" group="0" name="Datum rodjenja" nullable="true" primary="false" size="" type="date"/>
+<column code="CKU_BROJ_TELEFONA" group="0" name="Broj telefona" nullable="true" primary="false" size="20" type="varchar(20)"/>
+<column code="CKU_EMAIL_ADRESA" group="0" name="Email adresa" nullable="true" primary="false" size="40" type="varchar(40)"/>
+<crud>
+<create>sp_insert_CLAN_KULTURNE_USTANOVE</create>
+<retrieve>getClanKulturneUstanove</retrieve>
+<update>sp_update_CLAN_KULTURNE_USTANOVE</update>
+<delete>sp_delete_CLAN_KULTURNE_USTANOVE</delete>
+</crud>
+</table>
+<table code="CIJENA" name="Cijena">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TIPK_IDENTIFIKATOR_TIPA" group="0" name="Identifikator tipa" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TIPK_IDENTIFIKATOR_TIPA" refTable="TIP_KARTE"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka tipa manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="MANIFESTACIJA"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="MANIFESTACIJA"/>
+</column>
+<column code="CI_CIJENA" group="0" name="Cijena" nullable="false" primary="false" size="" type="float"/>
+<crud>
+<create>sp_insert_CIJENA</create>
+<retrieve>getCijena</retrieve>
+<update>sp_update_CIJENA</update>
+<delete>sp_delete_CIJENA</delete>
+</crud>
+</table>
+<table code="KARTE" name="Karte">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="KA_IDENTIFIKATOR_KARTE" group="0" name="Identifikator karte" nullable="false" primary="true" size="" type="int"/>
+<column code="TIPK_IDENTIFIKATOR_TIPA" group="0" name="Identifikator tipa karte" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TIPK_IDENTIFIKATOR_TIPA" refTable="CIJENA"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="CIJENA"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Tip manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="CIJENA"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="CIJENA"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="CIJENA"/>
+</column>
+<column code="KA_DATUM_I_VRIJEME" group="0" name="Datum i vrijeme" nullable="true" primary="false" size="" type="datetime"/>
+<column code="KA_PLACENA" group="0" name="Placena" nullable="false" primary="false" size="" type="bit"/>
+<crud>
+<create>sp_insert_KARTE</create>
+<retrieve>getKarte</retrieve>
+<update>sp_update_KARTE</update>
+<delete>sp_delete_KARTE</delete>
+</crud>
+</table>
+<table code="KUPLJENE_KARTE" name="Kupljene karte clanova">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="KA_IDENTIFIKATOR_KARTE" group="0" name="Identifikator karte" nullable="false" primary="true" size="" type="int">
+<references refColumn="KA_IDENTIFIKATOR_KARTE" refTable="KARTE"/>
+</column>
+<column code="TIPK_IDENTIFIKATOR_TIPA" group="0" name="Identifikator tipa karte" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TIPK_IDENTIFIKATOR_TIPA" refTable="KARTE"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="KARTE"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka tipa manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="KARTE"/>
+</column>
+<column code="KAR_IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="CLAN_KULTURNE_USTANOVE"/>
+<references refColumn="IPL_IDENT" refTable="KARTE"/>
+</column>
+<column code="KAR_DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="CLAN_KULTURNE_USTANOVE"/>
+<references refColumn="DR_OZNAKA" refTable="KARTE"/>
+</column>
+<column code="CKU_CLANSKI_BROJ" group="0" name="Clanski broj" nullable="false" primary="true" size="" type="int">
+<references refColumn="CKU_CLANSKI_BROJ" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<crud>
+<create>sp_insert_KUPLJENE_KARTE</create>
+<retrieve>getKupljeneKarte</retrieve>
+<update>sp_update_KUPLJENE_KARTE</update>
+<delete>sp_delete_KUPLJENE_KARTE</delete>
+</crud>
+</table>
+<table code="MANIFESTACIJA" name="Manifestacija">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int"/>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Tip manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="TIP_MANIFESTACIJE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="PRAVNO_LICE"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="PRAVNO_LICE"/>
+</column>
+<column code="MA_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<column code="MA_POCETAK" group="0" name="Pocetak manif" nullable="true" primary="false" size="" type="datetime"/>
+<column code="MA_ZAVRSETAK" group="0" name="Zavrsetak manif" nullable="true" primary="false" size="" type="datetime"/>
+<column code="MA_BROJ_KARATA_U_PRODAJI" group="0" name="Broj karata u prodaji" nullable="true" primary="false" size="" type="int"/>
+<column code="MA_VAZECA" group="0" name="Vazeca manifestacija" nullable="true" primary="false" size="" type="bit"/>
+<column code="NM_IDENTIFIKATOR" group="0" name="Mjesto odrzavanja" nullable="true" primary="false" size="" type="int">
+<references refColumn="NM_IDENTIFIKATOR" refTable="NASELJENO_MJESTO"/>
+</column>
+<crud>
+<create>sp_insert_MANIFESTACIJA</create>
+<retrieve>getManifestacija</retrieve>
+<update>sp_update_MANIFESTACIJA</update>
+<delete>sp_delete_MANIFESTACIJA</delete>
+</crud>
+</table>
+<table code="REZERVACIJE" name="Rezervacije">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="REZ_IDENTIFIKATOR_REZ" group="0" name="Identifikator rezervacije" nullable="false" primary="true" size="" type="int"/>
+<column code="SR_IDENTIFIKATOR_STATUSA" group="0" name="Identifikator statusa" nullable="false" primary="true" size="1" type="numeric(1)">
+<references refColumn="SR_IDENTIFIKATOR_STATUSA" refTable="STATUS_REZERVACIJE"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Tip manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="MANIFESTACIJA"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="MANIFESTACIJA"/>
+</column>
+<column code="REZ_BROJ_KARATA" group="0" name="Broj karata" nullable="false" primary="false" size="1" type="numeric(1)"/>
+<column code="ROK_PLACANJA" group="0" name="Rok placanja" nullable="true" primary="false" size="" type="int"/>
+<crud>
+<create>sp_insert_REZERVACIJE</create>
+<retrieve>getRezervacije</retrieve>
+<update>sp_update_REZERVACIJE</update>
+<delete>sp_delete_REZERVACIJE</delete>
+</crud>
+</table>
+<table code="SLOZENA_MANIFESTACIJA" name="Slozena manifestacija">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="MAN_MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka slozene man" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Tip slozene man" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="MANIFESTACIJA"/>
+<references refColumn="IPL_IDENT" refTable="MANIFESTACIJA"/>
+</column>
+<column code="MAN_DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="MANIFESTACIJA"/>
+<references refColumn="DR_OZNAKA" refTable="MANIFESTACIJA"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka clanice man" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<column code="MAN_TM_OZNAKA_MANIFESTACIJE" group="0" name="Tip clanice man" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="MANIFESTACIJA"/>
+</column>
+<crud>
+<create>sp_insert_SLOZENA_MANIFESTACIJA</create>
+<retrieve>getSlozenaManifestacija</retrieve>
+<update>sp_update_SLOZENA_MANIFESTACIJA</update>
+<delete>sp_delete_SLOZENA_MANIFESTACIJA</delete>
+</crud>
+</table>
+<table code="TIP_MANIFESTACIJE" name="Tip manifestacije">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka tipa manifestacije" nullable="false" primary="true" size="2" type="numeric(2)"/>
+<column code="TM_NAZIV" group="0" name="Naziv" nullable="false" primary="false" size="80" type="varchar(80)"/>
+<crud>
+<create>sp_insert_TIP_MANIFESTACIJE</create>
+<retrieve>getTipManifestacije</retrieve>
+<update>sp_update_TIP_MANIFESTACIJE</update>
+<delete>sp_delete_TIP_MANIFESTACIJE</delete>
+</crud>
+</table>
+<table code="REZERVACIJE_CLANOVA" name="Rezervacije clanova">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="REZ_IDENTIFIKATOR_REZ" group="0" name="Identifikator rezervacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="REZ_IDENTIFIKATOR_REZ" refTable="REZERVACIJE"/>
+</column>
+<column code="SR_IDENTIFIKATOR_STATUSA" group="0" name="Identifikator statusa" nullable="false" primary="true" size="1" type="numeric(1)">
+<references refColumn="SR_IDENTIFIKATOR_STATUSA" refTable="REZERVACIJE"/>
+</column>
+<column code="MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="REZERVACIJE"/>
+</column>
+<column code="TM_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka tipa manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="REZERVACIJE"/>
+</column>
+<column code="IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="REZERVACIJE"/>
+<references refColumn="IPL_IDENT" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<column code="DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="REZERVACIJE"/>
+<references refColumn="DR_OZNAKA" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<column code="CKU_CLANSKI_BROJ" group="0" name="Clanski broj" nullable="false" primary="true" size="" type="int">
+<references refColumn="CKU_CLANSKI_BROJ" refTable="CLAN_KULTURNE_USTANOVE"/>
+</column>
+<crud>
+<create>sp_insert_REZERVACIJE_CLANOVA</create>
+<retrieve>getRezervacijeClanova</retrieve>
+<update>sp_update_REZERVACIJE_CLANOVA</update>
+<delete>sp_delete_REZERVACIJE_CLANOVA</delete>
+</crud>
+</table>
+<table code="REZERVISANE_KARTE" name="Rezervisane karte">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="REZ_IDENTIFIKATOR_REZ" group="0" name="Identifikator rezervacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="REZ_IDENTIFIKATOR_REZ" refTable="REZERVACIJE"/>
+</column>
+<column code="SR_IDENTIFIKATOR_STATUSA" group="0" name="Identifikator statusa" nullable="false" primary="true" size="1" type="numeric(1)">
+<references refColumn="SR_IDENTIFIKATOR_STATUSA" refTable="REZERVACIJE"/>
+</column>
+<column code="KA_IDENTIFIKATOR_KARTE" group="0" name="Identifikator karte" nullable="false" primary="true" size="" type="int">
+<references refColumn="KA_IDENTIFIKATOR_KARTE" refTable="KARTE"/>
+</column>
+<column code="TIPK_IDENTIFIKATOR_TIPA" group="0" name="Identifikator tipa karte" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TIPK_IDENTIFIKATOR_TIPA" refTable="KARTE"/>
+</column>
+<column code="KAR_MA_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka manifestacije" nullable="false" primary="true" size="" type="int">
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="REZERVACIJE"/>
+<references refColumn="MA_OZNAKA_MANIFESTACIJE" refTable="KARTE"/>
+</column>
+<column code="KAR_TM_OZNAKA_MANIFESTACIJE" group="0" name="Oznaka tipa manifestacije" nullable="false" primary="true" size="2" type="numeric(2)">
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="REZERVACIJE"/>
+<references refColumn="TM_OZNAKA_MANIFESTACIJE" refTable="KARTE"/>
+</column>
+<column code="KAR_IPL_IDENT" group="0" name="Organizator" nullable="false" primary="true" size="" type="int">
+<references refColumn="IPL_IDENT" refTable="REZERVACIJE"/>
+<references refColumn="IPL_IDENT" refTable="KARTE"/>
+</column>
+<column code="KAR_DR_OZNAKA" group="0" name="Drzava organizatora" nullable="false" primary="true" size="3" type="char(3)">
+<references refColumn="DR_OZNAKA" refTable="REZERVACIJE"/>
+<references refColumn="DR_OZNAKA" refTable="KARTE"/>
+</column>
+<crud>
+<create>sp_insert_REZERVISANE_KARTE</create>
+<retrieve>getRezervisaneKarte</retrieve>
+<update>sp_update_REZERVISANE_KARTE</update>
+<delete>sp_delete_REZERVISANE_KARTE</delete>
+</crud>
+</table>
+<table code="STATUS_REZERVACIJE" name="Status rezervacije">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="SR_IDENTIFIKATOR_STATUSA" group="0" name="Identifikator statusa" nullable="false" primary="true" size="1" type="numeric(1)"/>
+<column code="TIP_STATUSA" group="0" name="Tip statusa" nullable="false" primary="false" size="30" type="varchar(30)"/>
+<crud>
+<create>sp_insert_STATUS_REZERVACIJE</create>
+<retrieve>getStatusRezervacije</retrieve>
+<update>sp_update_STATUS_REZERVACIJE</update>
+<delete>sp_delete_STATUS_REZERVACIJE</delete>
+</crud>
+</table>
+<table code="TIP_KARTE" name="Tip karte">
+<groups>
+<group id="0" name="Ime grupe"/>
+</groups>
+<column code="TIPK_IDENTIFIKATOR_TIPA" group="0" name="Identifikator tipa" nullable="false" primary="true" size="2" type="numeric(2)"/>
+<column code="NAZIV" group="0" name="Naziv" nullable="true" primary="false" size="80" type="varchar(80)"/>
+<crud>
+<create>sp_insert_TIP_KARTE</create>
+<retrieve>getTipKarte</retrieve>
+<update>sp_update_TIP_KARTE</update>
+<delete>sp_delete_TIP_KARTE</delete>
+</crud>
+</table>
+</package>
+</database>
